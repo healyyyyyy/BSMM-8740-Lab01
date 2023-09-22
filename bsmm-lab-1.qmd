@@ -1,7 +1,7 @@
 ---
 title: "BSMM-lab-1"
 subtitle: "BSMM 8740 Fall 2023"
-author: "Maaz Saeed"
+author: "Maaz Saeed | GitHub: healyyyyyy"
 date: "2023-09-22"
 format: html
 editor: visual
@@ -48,13 +48,13 @@ The win loss records for the New York Mets, for the years 2004 - 2012 are displa
 mets_ben <- Teams |>
   dplyr::select(teamID, yearID, G, W, L, R, RA,) |>
   dplyr::filter(teamID == "NYN" & yearID %in% 2004:2012)
-mets_ben
+#mets_ben
 
 mets_ben <- mets_ben |>
   dplyr::rename(RS = R)    # new name = old name
 mets_ben
 ```
-The runs scored and allowed are displayed above for the eyars 2004 - 2012.
+The runs scored and allowed are displayed above for the years 2004 - 2012.
 
 ...
 
@@ -133,9 +133,7 @@ temp_again
 
 
 ```
-The above are the seasons ranked in descending order (top to down, best to worst)
-
-...
+The above are the seasons ranked in descending order by difference of expected wins and actual wins (top to down, best to worst).
 
 ### Exercise 7 Contd.
 ```{r}
@@ -146,19 +144,63 @@ mets_ben
 ```
 The above are the seasons ranked in descending order (top to down, best to worst), while Ben worked with the Mets.
 
-...
 
 ### Exercise 8
-
+```{r}
+mets_ben |>
+  dplyr::summarize(
+    num_years = n(), 
+    total_W = sum(W), 
+    total_L = sum(L), 
+    total_WPct = mean(WPct), 
+    sum_resid = sum(Diff)
+  )
 ```
+In these nine years, the Mets had a combined record of 728 wins and 730 losses, for an overall winning percentage of approximately ~50.66%.
 
-
-...
 
 ### Exercise 9
-
-...
+```{r}
+#
+#library(ggplot)
+#ggplot(data = Ikea, aes(x = width, y = price)) +
+#  geom_point() + 
+#  labs(
+#    x = "width", 
+#    y = "price", 
+#    title = "Ikea Furniture Width-Price"
+#    )
+```
 
 ### Exercise 10
+```{r}
+library(dplyr)
+mets_ben <- mets_ben %>%
+  dplyr::mutate(
+    gm = case_when(
+      yearID == 2004 ~ "Jim Duquette",
+      yearID >= 2005 & yearID <= 2010 ~ "Omar Minaya",
+      yearID >= 2011 ~ "Sandy Alderson"
+    )
+  )
+mets_ben
+```
+Data divided into 3 groups (3 managers).
 
-...
+### Exercise 11
+```{r manager grouping}
+ 
+manager_summary <- mets_ben %>%
+  group_by(gm) %>%
+  summarize(
+    num_years = n(),
+    total_W = sum(W),
+    total_L = sum(L),
+    total_WPct = mean(WPct),
+    sum_resid = sum(Diff)
+  )
+
+# Print the manager summary
+manager_summary
+```
+Data grouped by manager name.
