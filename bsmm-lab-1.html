@@ -3154,57 +3154,272 @@ $ teamIDretro    &lt;chr&gt; &quot;BS1&quot;, &quot;CH1&quot;, &quot;CL1&quot;, 
 <h3 class="anchored" data-anchor-id="exercise-3">Exercise 3</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mets_ben <span class="ot">&lt;-</span> Teams <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(teamID, yearID, R, RA,) <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(teamID, yearID, G, W, L, R, RA,) <span class="sc">|&gt;</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(teamID <span class="sc">==</span> <span class="st">&quot;NYN&quot;</span> <span class="sc">&amp;</span> yearID <span class="sc">%in%</span> <span class="dv">2004</span><span class="sc">:</span><span class="dv">2012</span>)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>mets_ben</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  teamID yearID   R  RA
-1    NYN   2004 684 731
-2    NYN   2005 722 648
-3    NYN   2006 834 731
-4    NYN   2007 804 750
-5    NYN   2008 799 715
-6    NYN   2009 671 757
-7    NYN   2010 656 652
-8    NYN   2011 718 742
-9    NYN   2012 650 709</code></pre>
+<pre><code>  teamID yearID   G  W  L   R  RA
+1    NYN   2004 162 71 91 684 731
+2    NYN   2005 162 83 79 722 648
+3    NYN   2006 162 97 65 834 731
+4    NYN   2007 162 88 74 804 750
+5    NYN   2008 162 89 73 799 715
+6    NYN   2009 162 70 92 671 757
+7    NYN   2010 162 79 83 656 652
+8    NYN   2011 162 77 85 718 742
+9    NYN   2012 162 74 88 650 709</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mets_ben <span class="ot">&lt;-</span> mets_ben <span class="sc">|&gt;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">RS =</span> R)    <span class="co"># new name = old name</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>mets_ben</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  teamID yearID  RS  RA
-1    NYN   2004 684 731
-2    NYN   2005 722 648
-3    NYN   2006 834 731
-4    NYN   2007 804 750
-5    NYN   2008 799 715
-6    NYN   2009 671 757
-7    NYN   2010 656 652
-8    NYN   2011 718 742
-9    NYN   2012 650 709</code></pre>
+<pre><code>  teamID yearID   G  W  L  RS  RA
+1    NYN   2004 162 71 91 684 731
+2    NYN   2005 162 83 79 722 648
+3    NYN   2006 162 97 65 834 731
+4    NYN   2007 162 88 74 804 750
+5    NYN   2008 162 89 73 799 715
+6    NYN   2009 162 70 92 671 757
+7    NYN   2010 162 79 83 656 652
+8    NYN   2011 162 77 85 718 742
+9    NYN   2012 162 74 88 650 709</code></pre>
 </div>
 </div>
+<p>The runs scored and allowed are displayed above for the eyars 2004 - 2012.</p>
 <p>…</p>
 </section>
 <section id="exercise-4" class="level3">
 <h3 class="anchored" data-anchor-id="exercise-4">Exercise 4</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mets_ben <span class="ot">&lt;-</span> mets_ben <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">WPct =</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> (RA<span class="sc">/</span>RS)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>mets_ben</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  teamID yearID   G  W  L  RS  RA      WPct
+1    NYN   2004 162 71 91 684 731 0.4668211
+2    NYN   2005 162 83 79 722 648 0.5538575
+3    NYN   2006 162 97 65 834 731 0.5655308
+4    NYN   2007 162 88 74 804 750 0.5347071
+5    NYN   2008 162 89 73 799 715 0.5553119
+6    NYN   2009 162 70 92 671 757 0.4399936
+7    NYN   2010 162 79 83 656 652 0.5030581
+8    NYN   2011 162 77 85 718 742 0.4835661
+9    NYN   2012 162 74 88 650 709 0.4566674</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>mets_ben <span class="ot">&lt;-</span> mets_ben <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">W_hat =</span> WPct<span class="sc">*</span>G)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>mets_ben</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  teamID yearID   G  W  L  RS  RA      WPct    W_hat
+1    NYN   2004 162 71 91 684 731 0.4668211 75.62501
+2    NYN   2005 162 83 79 722 648 0.5538575 89.72491
+3    NYN   2006 162 97 65 834 731 0.5655308 91.61600
+4    NYN   2007 162 88 74 804 750 0.5347071 86.62255
+5    NYN   2008 162 89 73 799 715 0.5553119 89.96053
+6    NYN   2009 162 70 92 671 757 0.4399936 71.27896
+7    NYN   2010 162 79 83 656 652 0.5030581 81.49541
+8    NYN   2011 162 77 85 718 742 0.4835661 78.33771
+9    NYN   2012 162 74 88 650 709 0.4566674 73.98012</code></pre>
+</div>
+</div>
+<p>WPct = Win Percentage, W_hat = Expected number of wins.</p>
 <p>…</p>
 </section>
 <section id="exercise-5" class="level3">
 <h3 class="anchored" data-anchor-id="exercise-5">Exercise 5</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>temp_var <span class="ot">&lt;-</span> Teams <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(teamID, yearID, G, W,  R, RA) <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(teamID <span class="sc">==</span> <span class="st">&quot;NYN&quot;</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>temp_var <span class="ot">&lt;-</span> temp_var <span class="sc">|&gt;</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">RS =</span> R)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>temp_var <span class="ot">&lt;-</span> temp_var <span class="sc">|&gt;</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">WPct =</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> (RA<span class="sc">/</span>RS)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>temp_var <span class="ot">&lt;-</span> temp_var <span class="sc">|&gt;</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">W_hat =</span> WPct<span class="sc">*</span>G)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>temp_var <span class="ot">&lt;-</span> temp_var <span class="sc">|&gt;</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(teamID, yearID, G, W,  RS, RA, WPct, W_hat) <span class="sc">|&gt;</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(teamID <span class="sc">==</span><span class="st">&#39;NYN&#39;</span> <span class="sc">&amp;</span> W <span class="sc">&gt;=</span> <span class="fu">as.integer</span>(W_hat))</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>temp_var</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   teamID yearID   G   W  RS  RA      WPct     W_hat
+1     NYN   1963 162  51 501 774 0.2952685  47.83350
+2     NYN   1965 164  50 495 752 0.3023026  49.57762
+3     NYN   1966 161  66 587 761 0.3730353  60.05869
+4     NYN   1967 162  61 498 672 0.3545001  57.42901
+5     NYN   1969 162 100 632 541 0.5771147  93.49259
+6     NYN   1972 156  83 528 578 0.4548842  70.96194
+7     NYN   1974 162  71 572 646 0.4394681  71.19383
+8     NYN   1981 105  41 348 432 0.3935423  41.32195
+9     NYN   1983 162  68 575 680 0.4169162  67.54043
+10    NYN   1984 162  90 652 676 0.4819336  78.07325
+11    NYN   1985 162  98 695 568 0.5995477  97.12673
+12    NYN   1986 162 108 783 578 0.6472830 104.85985
+13    NYN   1994 113  55 506 526 0.4806274  54.31090
+14    NYN   1997 162  88 777 709 0.5456648  88.39770
+15    NYN   1998 162  88 706 645 0.5450599  88.29970
+16    NYN   1999 163  97 853 711 0.5900505  96.17824
+17    NYN   2000 162  94 807 738 0.5445713  88.22055
+18    NYN   2001 162  82 642 713 0.4477449  72.53468
+19    NYN   2006 162  97 834 731 0.5655308  91.61600
+20    NYN   2007 162  88 804 750 0.5347071  86.62255
+21    NYN   2008 162  89 799 715 0.5553119  89.96053
+22    NYN   2012 162  74 650 709 0.4566674  73.98012
+23    NYN   2013 162  74 619 684 0.4502389  72.93871
+24    NYN   2015 162  90 683 613 0.5538552  89.72455
+25    NYN   2016 162  87 671 617 0.5418519  87.78001
+26    NYN   2017 162  70 735 863 0.4204105  68.10650
+27    NYN   2018 162  77 676 707 0.4775962  77.37059
+28    NYN   2019 162  86 791 737 0.5352962  86.71799
+29    NYN   2021 162  77 636 668 0.4754749  77.02693
+30    NYN   2022 162 101 772 606 0.6187413 100.23609</code></pre>
+</div>
+</div>
+<p>They performed better in 30 seasons and worse in 31 (can be verified by total - better)</p>
+<p>Or replacing the ‘&gt;=’ operator with ‘&lt;’ in the last line of this code chunk.</p>
 <p>…</p>
 </section>
 <section id="exercise-6" class="level3">
 <h3 class="anchored" data-anchor-id="exercise-6">Exercise 6</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">arrange</span>(mets_ben, <span class="fu">desc</span>(W))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  teamID yearID   G  W  L  RS  RA      WPct    W_hat
+1    NYN   2006 162 97 65 834 731 0.5655308 91.61600
+2    NYN   2008 162 89 73 799 715 0.5553119 89.96053
+3    NYN   2007 162 88 74 804 750 0.5347071 86.62255
+4    NYN   2005 162 83 79 722 648 0.5538575 89.72491
+5    NYN   2010 162 79 83 656 652 0.5030581 81.49541
+6    NYN   2011 162 77 85 718 742 0.4835661 78.33771
+7    NYN   2012 162 74 88 650 709 0.4566674 73.98012
+8    NYN   2004 162 71 91 684 731 0.4668211 75.62501
+9    NYN   2009 162 70 92 671 757 0.4399936 71.27896</code></pre>
+</div>
+</div>
+<p>Above are the seasons ranked by the number of games won in descending order from top to bottom (highest to lowest).</p>
 <p>…</p>
 </section>
 <section id="exercise-7" class="level3">
 <h3 class="anchored" data-anchor-id="exercise-7">Exercise 7</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>temp_again <span class="ot">&lt;-</span> Teams <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(teamID, yearID, G, W,  R, RA) <span class="sc">|&gt;</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(teamID <span class="sc">==</span> <span class="st">&quot;NYN&quot;</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>temp_again <span class="ot">&lt;-</span> temp_again <span class="sc">|&gt;</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">RS =</span> R)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>temp_again <span class="ot">&lt;-</span> temp_again <span class="sc">|&gt;</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">WPct =</span> <span class="dv">1</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> (RA<span class="sc">/</span>RS)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>temp_again <span class="ot">&lt;-</span> temp_again <span class="sc">|&gt;</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">W_hat =</span> WPct<span class="sc">*</span>G)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>temp_again <span class="ot">&lt;-</span> temp_again <span class="sc">|&gt;</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(teamID, yearID, G, W, WPct, W_hat) <span class="sc">|&gt;</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Diff =</span> W <span class="sc">-</span> W_hat) <span class="sc">|&gt;</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(<span class="fu">desc</span>(Diff))</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>temp_again</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   teamID yearID   G   W      WPct     W_hat         Diff
+1     NYN   1972 156  83 0.4548842  70.96194  12.03805713
+2     NYN   1984 162  90 0.4819336  78.07325  11.92675494
+3     NYN   2001 162  82 0.4477449  72.53468   9.46531846
+4     NYN   1969 162 100 0.5771147  93.49259   6.50741145
+5     NYN   1966 161  66 0.3730353  60.05869   5.94131256
+6     NYN   2000 162  94 0.5445713  88.22055   5.77945017
+7     NYN   2006 162  97 0.5655308  91.61600   5.38400315
+8     NYN   1967 162  61 0.3545001  57.42901   3.57098750
+9     NYN   1963 162  51 0.2952685  47.83350   3.16649551
+10    NYN   1986 162 108 0.6472830 104.85985   3.14015074
+11    NYN   2017 162  70 0.4204105  68.10650   1.89349522
+12    NYN   2007 162  88 0.5347071  86.62255   1.37744558
+13    NYN   2013 162  74 0.4502389  72.93871   1.06129020
+14    NYN   1985 162  98 0.5995477  97.12673   0.87327360
+15    NYN   1999 163  97 0.5900505  96.17824   0.82176494
+16    NYN   2022 162 101 0.6187413 100.23609   0.76390856
+17    NYN   1994 113  55 0.4806274  54.31090   0.68910030
+18    NYN   1983 162  68 0.4169162  67.54043   0.45956937
+19    NYN   1965 164  50 0.3023026  49.57762   0.42237847
+20    NYN   2015 162  90 0.5538552  89.72455   0.27545241
+21    NYN   2012 162  74 0.4566674  73.98012   0.01988152
+22    NYN   2021 162  77 0.4754749  77.02693  -0.02693248
+23    NYN   1974 162  71 0.4394681  71.19383  -0.19383210
+24    NYN   1998 162  88 0.5450599  88.29970  -0.29970004
+25    NYN   1981 105  41 0.3935423  41.32195  -0.32194665
+26    NYN   2018 162  77 0.4775962  77.37059  -0.37058710
+27    NYN   1997 162  88 0.5456648  88.39770  -0.39769886
+28    NYN   2019 162  86 0.5352962  86.71799  -0.71798948
+29    NYN   2016 162  87 0.5418519  87.78001  -0.78000794
+30    NYN   2008 162  89 0.5553119  89.96053  -0.96052803
+31    NYN   1973 161  82 0.5167177  83.19156  -1.19155503
+32    NYN   2009 162  70 0.4399936  71.27896  -1.27895513
+33    NYN   2011 162  77 0.4835661  78.33771  -1.33770571
+34    NYN   2003 161  66 0.4202839  67.66571  -1.66570543
+35    NYN   1975 162  82 0.5165179  83.67590  -1.67590208
+36    NYN   1988 160 100 0.6358569 101.73711  -1.73711101
+37    NYN   2020  60  26 0.4630137  27.78082  -1.78082192
+38    NYN   1992 162  72 0.4569491  74.02575  -2.02575362
+39    NYN   1987 162  92 0.5816314  94.22429  -2.22429248
+40    NYN   1982 162  65 0.4150368  67.23596  -2.23595528
+41    NYN   2010 162  79 0.5030581  81.49541  -2.49540821
+42    NYN   1991 161  77 0.4953345  79.74885  -2.74884994
+43    NYN   1980 162  67 0.4310244  69.82595  -2.82595122
+44    NYN   1971 162  83 0.5333547  86.40347  -3.40346536
+45    NYN   2014 162  79 0.5088205  82.42892  -3.42891848
+46    NYN   1964 163  53 0.3496577  56.99420  -3.99420479
+47    NYN   2002 161  75 0.4906684  78.99762  -3.99761828
+48    NYN   1968 163  73 0.4732702  77.14304  -4.14303514
+49    NYN   1979 163  63 0.4136633  67.42712  -4.42712435
+50    NYN   2004 162  71 0.4668211  75.62501  -4.62501135
+51    NYN   1978 162  66 0.4362672  70.67528  -4.67528113
+52    NYN   1989 162  87 0.5685327  92.10229  -5.10228954
+53    NYN   1976 162  86 0.5664858  91.77070  -5.77069776
+54    NYN   1970 162  83 0.5489388  88.92809  -5.92809046
+55    NYN   1996 162  71 0.4783708  77.49607  -6.49606699
+56    NYN   2005 162  83 0.5538575  89.72491  -6.72490937
+57    NYN   1977 162  64 0.4394239  71.18668  -7.18667632
+58    NYN   1995 144  69 0.5305596  76.40059  -7.40058852
+59    NYN   1962 161  40 0.2975544  47.90626  -7.90625633
+60    NYN   1990 162  91 0.6151461  99.65367  -8.65367464
+61    NYN   1993 162  59 0.4492837  72.78395 -13.78395415</code></pre>
+</div>
+</div>
+<p>The above are the seasons ranked in descending order (top to down, best to worst)</p>
+<p>…</p>
+</section>
+<section id="exercise-7-contd." class="level3">
+<h3 class="anchored" data-anchor-id="exercise-7-contd.">Exercise 7 Contd.</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>mets_ben <span class="ot">&lt;-</span>mets_ben <span class="sc">%&gt;%</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Diff =</span> W <span class="sc">-</span>W_hat) <span class="sc">|&gt;</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(<span class="fu">desc</span>(Diff))</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>mets_ben</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  teamID yearID   G  W  L  RS  RA      WPct    W_hat        Diff
+1    NYN   2006 162 97 65 834 731 0.5655308 91.61600  5.38400315
+2    NYN   2007 162 88 74 804 750 0.5347071 86.62255  1.37744558
+3    NYN   2012 162 74 88 650 709 0.4566674 73.98012  0.01988152
+4    NYN   2008 162 89 73 799 715 0.5553119 89.96053 -0.96052803
+5    NYN   2009 162 70 92 671 757 0.4399936 71.27896 -1.27895513
+6    NYN   2011 162 77 85 718 742 0.4835661 78.33771 -1.33770571
+7    NYN   2010 162 79 83 656 652 0.5030581 81.49541 -2.49540821
+8    NYN   2004 162 71 91 684 731 0.4668211 75.62501 -4.62501135
+9    NYN   2005 162 83 79 722 648 0.5538575 89.72491 -6.72490937</code></pre>
+</div>
+</div>
+<p>The above are the seasons ranked in descending order (top to down, best to worst), while Ben worked with the Mets.</p>
 <p>…</p>
 </section>
 <section id="exercise-8" class="level3">
 <h3 class="anchored" data-anchor-id="exercise-8">Exercise 8</h3>
+<p>```</p>
 <p>…</p>
 </section>
 <section id="exercise-9" class="level3">

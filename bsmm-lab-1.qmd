@@ -46,7 +46,7 @@ The win loss records for the New York Mets, for the years 2004 - 2012 are displa
 ### Exercise 3
 ```{r gathering runs scored and allowed}
 mets_ben <- Teams |>
-  dplyr::select(teamID, yearID, R, RA,) |>
+  dplyr::select(teamID, yearID, G, W, L, R, RA,) |>
   dplyr::filter(teamID == "NYN" & yearID %in% 2004:2012)
 mets_ben
 
@@ -54,30 +54,104 @@ mets_ben <- mets_ben |>
   dplyr::rename(RS = R)    # new name = old name
 mets_ben
 ```
-
+The runs scored and allowed are displayed above for the eyars 2004 - 2012.
 
 ...
 
 ### Exercise 4
-```{r}
+```{r adding wpct column}
+mets_ben <- mets_ben |>
+  dplyr::mutate(WPct = 1 / (1 + (RA/RS)^2))
+mets_ben
 
+mets_ben <- mets_ben |>
+  dplyr::mutate(W_hat = WPct*G)
+mets_ben
 ```
+WPct = Win Percentage, W_hat = Expected number of wins.
 
 ...
 
 ### Exercise 5
+```{r}
+temp_var <- Teams |>
+  dplyr::select(teamID, yearID, G, W,  R, RA) |>
+  dplyr::filter(teamID == "NYN")
+
+temp_var <- temp_var |>
+  dplyr::rename(RS = R)
+
+
+temp_var <- temp_var |>
+  dplyr::mutate(WPct = 1 / (1 + (RA/RS)^2))
+
+
+temp_var <- temp_var |>
+  dplyr::mutate(W_hat = WPct*G)
+
+temp_var <- temp_var |>
+  dplyr::select(teamID, yearID, G, W,  RS, RA, WPct, W_hat) |>
+  dplyr::filter(teamID =='NYN' & W >= as.integer(W_hat))
+temp_var
+```
+They performed better in 30 seasons and worse in 31
+(can be verified by total - better)
+
+Or replacing the '>=' operator with '<' in the last line of this code chunk.
 
 ...
 
 ### Exercise 6
+```{r}
+dplyr::arrange(mets_ben, desc(W))
+```
+Above are the seasons ranked by the number of games won in descending order from top to bottom (highest to lowest).
 
 ...
 
 ### Exercise 7
+```{r}
+temp_again <- Teams |>
+  dplyr::select(teamID, yearID, G, W,  R, RA) |>
+  dplyr::filter(teamID == "NYN")
+
+temp_again <- temp_again |>
+  dplyr::rename(RS = R)
+
+temp_again <- temp_again |>
+  dplyr::mutate(WPct = 1 / (1 + (RA/RS)^2))
+
+temp_again <- temp_again |>
+  dplyr::mutate(W_hat = WPct*G)
+
+temp_again <- temp_again |>
+  dplyr::select(teamID, yearID, G, W, WPct, W_hat) |>
+  dplyr::mutate(Diff = W - W_hat) |>
+  dplyr::arrange(desc(Diff))
+temp_again
+
+
+
+```
+The above are the seasons ranked in descending order (top to down, best to worst)
+
+...
+
+### Exercise 7 Contd.
+```{r}
+mets_ben <-mets_ben %>% 
+  dplyr::mutate(Diff = W -W_hat) |>
+  dplyr::arrange(desc(Diff))
+mets_ben
+```
+The above are the seasons ranked in descending order (top to down, best to worst), while Ben worked with the Mets.
 
 ...
 
 ### Exercise 8
+
+```
+
 
 ...
 
