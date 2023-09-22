@@ -3060,7 +3060,9 @@ vertical-align: -.125em;
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install the package &#39;Lahman&#39;</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&#39;Lahman&#39;)</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load the package</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Lahman)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Lahman)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="exercises" class="level2">
@@ -3122,14 +3124,67 @@ $ teamIDlahman45 &lt;chr&gt; &quot;BS1&quot;, &quot;CH1&quot;, &quot;CL1&quot;, 
 $ teamIDretro    &lt;chr&gt; &quot;BS1&quot;, &quot;CH1&quot;, &quot;CL1&quot;, &quot;FW1&quot;, &quot;NY2&quot;, &quot;PH1&quot;, &quot;RC1&quot;, &quot;TRO&quot;,…</code></pre>
 </div>
 </div>
-<p>The <code>Teams</code> dataset has ___ observations and ___ variables.</p>
+<p>The <code>Teams</code> dataset has 3,015 observations and 48 variables.</p>
 </section>
 <section id="exercise-2" class="level3">
 <h3 class="anchored" data-anchor-id="exercise-2">Exercise 2</h3>
-<p>…</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mets <span class="ot">&lt;-</span> Teams  <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(teamID <span class="sc">==</span> <span class="st">&quot;NYN&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>my_mets <span class="ot">&lt;-</span> mets <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(yearID <span class="sc">&gt;</span> <span class="dv">2003</span> <span class="sc">&amp;</span> yearID <span class="sc">&lt;</span> <span class="dv">2013</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>my_mets <span class="sc">%&gt;%</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(teamID, yearID, W, L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  teamID yearID  W  L
+1    NYN   2004 71 91
+2    NYN   2005 83 79
+3    NYN   2006 97 65
+4    NYN   2007 88 74
+5    NYN   2008 89 73
+6    NYN   2009 70 92
+7    NYN   2010 79 83
+8    NYN   2011 77 85
+9    NYN   2012 74 88</code></pre>
+</div>
+</div>
+<p>The win loss records for the New York Mets, for the years 2004 - 2012 are displayed above.</p>
 </section>
 <section id="exercise-3" class="level3">
 <h3 class="anchored" data-anchor-id="exercise-3">Exercise 3</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mets_ben <span class="ot">&lt;-</span> Teams <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(teamID, yearID, R, RA,) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(teamID <span class="sc">==</span> <span class="st">&quot;NYN&quot;</span> <span class="sc">&amp;</span> yearID <span class="sc">%in%</span> <span class="dv">2004</span><span class="sc">:</span><span class="dv">2012</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>mets_ben</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  teamID yearID   R  RA
+1    NYN   2004 684 731
+2    NYN   2005 722 648
+3    NYN   2006 834 731
+4    NYN   2007 804 750
+5    NYN   2008 799 715
+6    NYN   2009 671 757
+7    NYN   2010 656 652
+8    NYN   2011 718 742
+9    NYN   2012 650 709</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mets_ben <span class="ot">&lt;-</span> mets_ben <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">RS =</span> R)    <span class="co"># new name = old name</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>mets_ben</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  teamID yearID  RS  RA
+1    NYN   2004 684 731
+2    NYN   2005 722 648
+3    NYN   2006 834 731
+4    NYN   2007 804 750
+5    NYN   2008 799 715
+6    NYN   2009 671 757
+7    NYN   2010 656 652
+8    NYN   2011 718 742
+9    NYN   2012 650 709</code></pre>
+</div>
+</div>
 <p>…</p>
 </section>
 <section id="exercise-4" class="level3">

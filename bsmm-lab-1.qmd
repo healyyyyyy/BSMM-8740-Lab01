@@ -18,6 +18,8 @@ Load packages and data:
 #install.packages('Lahman')
 # load the package
 library(Lahman)
+library(dplyr)
+library(magrittr)
 ```
 
 ## Exercises
@@ -28,17 +30,38 @@ library(Lahman)
 dplyr::glimpse(Teams)
 ```
 
-The `Teams` dataset has \_\_\_ observations and \_\_\_ variables.
+The `Teams` dataset has 3,015 observations and 48 variables.
 
 ### Exercise 2
-
-...
+```{r Mets 2004-2012}
+mets <- Teams  %>% 
+  dplyr::filter(teamID == "NYN")
+my_mets <- mets %>% 
+  dplyr::filter(yearID > 2003 & yearID < 2013)
+my_mets %>% 
+  dplyr::select(teamID, yearID, W, L)
+```
+The win loss records for the New York Mets, for the years 2004 - 2012 are displayed above.
 
 ### Exercise 3
+```{r gathering runs scored and allowed}
+mets_ben <- Teams |>
+  dplyr::select(teamID, yearID, R, RA,) |>
+  dplyr::filter(teamID == "NYN" & yearID %in% 2004:2012)
+mets_ben
+
+mets_ben <- mets_ben |>
+  dplyr::rename(RS = R)    # new name = old name
+mets_ben
+```
+
 
 ...
 
 ### Exercise 4
+```{r}
+
+```
 
 ...
 
