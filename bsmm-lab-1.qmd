@@ -1,8 +1,8 @@
 ---
 title: "BSMM-lab-1"
 subtitle: "BSMM 8740 Fall 2023"
-author: "Add your name here"
-date: "Add the date here"
+author: "Maaz Saeed"
+date: "2023-09-22"
 format: html
 editor: visual
 self-contained: true
@@ -15,7 +15,7 @@ Load packages and data:
 ```{r load-pkg-data}
 #| message: false
 # install the package 'Lahman'
-install.packages('Lahman')
+#install.packages('Lahman')
 # load the package
 library(Lahman)
 ```
